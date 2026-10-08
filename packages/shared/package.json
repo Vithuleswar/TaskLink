@@ -1,0 +1,8 @@
+{
+  "name": "@tasklink/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "TaskLink shared models, types, DIGIPIN algorithms, and constants",
+  "main": "src/index.ts",
+  "types": "src/index.ts"
+}

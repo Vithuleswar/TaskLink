@@ -1,0 +1,36 @@
+{
+  "name": "tasklink-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TaskLink - Cooperative-Owned Gig-Services Marketplace (SIH 2026 / SIH26089)",
+  "workspaces": [
+    "packages/*",
+    "services/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run --workspaces --if-present build",
+    "test": "npm run --workspaces --if-present test",
+    "dev:api": "npm --workspace=services/api run dev",
+    "dev:voice": "npm --workspace=services/voice run dev",
+    "dev:matching": "python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --app-dir services/matching",
+    "dev:admin": "npm --workspace=apps/admin run dev",
+    "dev:mobile": "npm --workspace=apps/mobile run dev",
+    "demo": "node scripts/demo_walkthrough.js",
+    "test:all": "npm --workspace=services/api test && python services/matching/tests/test_matching.py && npm --workspace=services/voice test",
+    "test:load": "python services/matching/tests/load_test_baseline.py 50 500",
+    "db:migrate": "node db/migrate.js",
+    "db:seed": "node db/seed.js"
+  },
+  "keywords": [
+    "cooperative",
+    "gig-economy",
+    "zero-commission",
+    "bhashini",
+    "sih2026",
+    "postgis",
+    "digipin"
+  ],
+  "author": "TaskLink Team",
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,81 @@
+# ── Node / npm ────────────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ── Build outputs ─────────────────────────────────────────────────────────────
+dist/
+build/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+*.tsbuildinfo
+
+# ── Vite cache ────────────────────────────────────────────────────────────────
+.vite/
+apps/*/node_modules/
+services/*/node_modules/
+packages/*/node_modules/
+
+# ── Environment secrets (NEVER commit these) ──────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+*.env
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+.pytest_cache/
+
+# ── OS files ──────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE / editors ─────────────────────────────────────────────────────────────
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+docker-compose.override.yml
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+logs/
+*.log
+*.log.*
+
+# ── Coverage ──────────────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── TypeScript ────────────────────────────────────────────────────────────────
+*.js.map
+# (keep .d.ts files – they help IDEs)
+
+# ── Flutter / Dart (if added later) ──────────────────────────────────────────
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+
+# ── Temp / scratch ────────────────────────────────────────────────────────────
+*.tmp
+*.bak
+*.swp
+~$*

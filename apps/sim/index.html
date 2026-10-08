@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskLink — Demo Control Room | SIH 2026 · SIH26089</title>
+  <meta name="description" content="TaskLink Demo Control Room: Feature-phone simulator, *99# USSD mock, voice call flow trace, public landing page. SIH 2026 · Ministry of Cooperation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0f172a;
+      --blue: #1e40af;
+      --blue-light: #3b82f6;
+      --green: #166534;
+      --green-light: #22c55e;
+      --orange: #c2410c;
+      --orange-light: #f97316;
+      --white: #ffffff;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-600: #475569;
+      --gray-800: #1e293b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+    }
+    h1,h2,h3 { font-family: 'Outfit', sans-serif; }
+
+    /* ── Nav ── */
+    nav {
+      background: rgba(15,23,42,0.95);
+      border-bottom: 1px solid rgba(59,130,246,0.3);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .nav-brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--white);
+      padding: 14px 0;
+      margin-right: 32px;
+      letter-spacing: -0.3px;
+    }
+    .nav-brand span { color: var(--orange-light); }
+    .nav-tabs { display: flex; gap: 0; flex: 1; overflow-x: auto; }
+    .nav-tab {
+      padding: 16px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.6);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+    .nav-tab:hover { color: white; }
+    .nav-tab.active { color: var(--blue-light); border-bottom-color: var(--blue-light); }
+    .nav-badge {
+      font-size: 9px;
+      background: var(--orange-light);
+      color: white;
+      border-radius: 8px;
+      padding: 2px 5px;
+      margin-left: 5px;
+      font-weight: 800;
+    }
+
+    /* ── Pages ── */
+    .page { display: none; padding: 24px; max-width: 1200px; margin: 0 auto; }
+    .page.active { display: block; }
+
+    /* ── Landing ── */
+    .hero {
+      text-align: center;
+      padding: 64px 24px;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+      border-radius: 20px;
+      margin-bottom: 48px;
+      border: 1px solid rgba(99,102,241,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(99,102,241,0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 50%, rgba(249,115,22,0.1) 0%, transparent 50%);
+      animation: hero-glow 8s ease-in-out infinite;
+    }
+    @keyframes hero-glow { 0%,100% { opacity:0.6; } 50% { opacity:1; } }
+    .hero-sih { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; position: relative; }
+    .hero-title {
+      font-size: clamp(32px, 5vw, 60px);
+      font-weight: 900;
+      background: linear-gradient(135deg, #fff 0%, #93c5fd 50%, #fdba74 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .hero-tagline {
+      font-size: 18px;
+      color: rgba(255,255,255,0.75);
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto 24px;
+      line-height: 1.6;
+    }
+    .hero-badges {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      margin-bottom: 28px;
+    }
+    .badge {
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .badge-orange { background: rgba(249,115,22,0.2); border: 1px solid rgba(249,115,22,0.4); color: #fdba74; }
+    .badge-blue { background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.4); color: #93c5fd; }
+    .badge-green { background: rgba(34,197,94,0.2); border: 1px solid rgba(34,197,94,0.4); color: #86efac; }
+    .hero-sahakar {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 8px;
+      position: relative;
+    }
+    .hero-sahakar em { color: #fdba74; font-style: normal; }
+
+    /* ── Stat Cards ── */
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 40px; }
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+    }
+    .stat-num { font-family: 'Outfit', sans-serif; font-size: 32px; font-weight: 900; margin-bottom: 4px; }
+    .stat-label { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.4; }
+    .stat-source { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 6px; }
+
+    /* ── Problem/Solution cards ── */
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 22px;
+    }
+    .card-icon { font-size: 32px; margin-bottom: 12px; }
+    .card-title { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .card-desc { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.6; }
+    .card.problem { border-color: rgba(239,68,68,0.3); }
+    .card.solution { border-color: rgba(34,197,94,0.3); }
+    .card-arrow { text-align: center; font-size: 28px; display: flex; align-items: center; justify-content: center; }
+
+    /* ── Commission calculator ── */
+    .calc-box {
+      background: linear-gradient(135deg, rgba(30,64,175,0.3), rgba(22,101,52,0.2));
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+    .calc-title { font-family:'Outfit',sans-serif; font-size:22px; font-weight:800; margin-bottom:20px; text-align:center; }
+    .calc-slider { margin-bottom: 16px; }
+    .calc-slider label { font-size: 13px; color: rgba(255,255,255,0.7); display: block; margin-bottom: 6px; }
+    .calc-slider input[type=range] { width: 100%; accent-color: #3b82f6; }
+    .calc-result {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .calc-col { text-align: center; padding: 16px; border-radius: 12px; }
+    .calc-col.old { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); }
+    .calc-col.new { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); }
+    .calc-amount { font-family:'Outfit',sans-serif; font-size:28px; font-weight:900; }
+
+    /* ── Simulator ── */
+    .sim-grid { display: grid; grid-template-columns: 350px 1fr; gap: 24px; }
+    @media(max-width:768px) { .sim-grid { grid-template-columns: 1fr; } }
+    .phone-shell {
+      background: #1a1a2e;
+      border: 8px solid #0d0d1a;
+      border-radius: 36px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+      overflow: hidden;
+      max-height: 680px;
+    }
+    .phone-screen {
+      background: #000;
+      color: #00ff41;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      padding: 16px;
+      min-height: 280px;
+      max-height: 280px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      border-bottom: 1px solid #222;
+    }
+    .phone-screen .sys { color: #888; }
+    .phone-screen .agent { color: #00bfff; }
+    .phone-screen .user { color: #00ff41; }
+    .phone-screen .pay { color: #ffa500; }
+    .phone-screen .sms { color: #ff69b4; }
+    .phone-keypad { padding: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .key {
+      background: #1a1a3e;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 12px 8px;
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .key:hover { background: #2a2a5e; }
+    .key:active { background: #3b82f6; transform: scale(0.95); }
+    .key.wide { grid-column: span 3; background: #1e3a5f; }
+    .key.call { background: #166534; }
+    .key.hangup { background: #7f1d1d; }
+    .key.hash { background: #2d1b69; }
+    .key.star { background: #1e3a5f; }
+    .sms-box {
+      background: rgba(255,105,180,0.1);
+      border: 1px solid rgba(255,105,180,0.3);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin: 8px 16px;
+      font-size: 12px;
+      font-family: monospace;
+      color: #ffb3d9;
+    }
+    .phone-status {
+      background: #0d0d1a;
+      padding: 8px 16px;
+      font-size: 11px;
+      color: #888;
+      display: flex;
+      justify-content: space-between;
+    }
+    .phone-actions { padding: 8px 16px; display: flex; gap: 8px; }
+    .phone-btn {
+      flex: 1;
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .phone-btn.green { background: #166534; color: white; }
+    .phone-btn.red { background: #7f1d1d; color: white; }
+    .phone-btn.blue { background: #1e3a5f; color: white; }
+    .phone-btn:hover { opacity: 0.85; }
+
+    /* ── Trace panel ── */
+    .trace-panel { display: flex; flex-direction: column; gap: 12px; max-height: 640px; overflow-y: auto; }
+    .trace-step {
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      border-left: 4px solid;
+      animation: fadein 0.4s ease;
+    }
+    @keyframes fadein { from { opacity:0; transform:translateX(10px); } to { opacity:1; transform:none; } }
+    .trace-voice { background: rgba(59,130,246,0.1); border-color: #3b82f6; }
+    .trace-pay { background: rgba(239,68,68,0.1); border-color: #ef4444; }
+    .trace-confirm { background: rgba(34,197,94,0.1); border-color: #22c55e; }
+    .trace-sms { background: rgba(255,105,180,0.1); border-color: #ff69b4; }
+    .trace-step-title { font-weight: 700; margin-bottom: 3px; }
+    .trace-step-detail { color: rgba(255,255,255,0.65); font-size: 12px; }
+    .trace-time { font-size: 10px; color: rgba(255,255,255,0.3); float: right; }
+    .controls-bar {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .ctrl-select, .ctrl-input {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      color: white;
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+    .ctrl-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .ctrl-btn.primary { background: var(--blue-light); color: white; }
+    .ctrl-btn.warning { background: var(--orange-light); color: white; }
+    .ctrl-btn.danger { background: #ef4444; color: white; }
+    .ctrl-btn.success { background: #22c55e; color: #000; }
+    .ctrl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .ctrl-label { font-size: 12px; color: rgba(255,255,255,0.5); }
+
+    /* ── USSD Simulator ── */
+    .ussd-shell {
+      background: #111;
+      border: 8px solid #222;
+      border-radius: 20px;
+      max-width: 340px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .ussd-header { background: #1a1a1a; padding: 12px 16px; display: flex; justify-content: space-between; font-size: 12px; color: #888; }
+    .ussd-screen {
+      background: #0a2a0a;
+      color: #00e676;
+      font-family: monospace;
+      font-size: 14px;
+      padding: 16px;
+      min-height: 220px;
+      white-space: pre-wrap;
+      overflow-y: auto;
+    }
+    .ussd-input-row { display: flex; background: #1a1a1a; padding: 8px 12px; gap: 8px; }
+    .ussd-input {
+      flex: 1;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 6px;
+      color: #00e676;
+      font-family: monospace;
+      font-size: 14px;
+      padding: 8px 10px;
+    }
+    .ussd-send {
+      background: #00695c;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: 700;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+
+    /* ── References ── */
+    .ref-list { list-style: none; }
+    .ref-item {
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      gap: 14px;
+    }
+    .ref-num { font-weight: 700; color: var(--blue-light); min-width: 28px; }
+    .ref-title { font-weight: 600; margin-bottom: 3px; }
+    .ref-detail { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+    /* ── Section headings ── */
+    .section-heading { font-family:'Outfit',sans-serif; font-size:24px; font-weight:800; margin-bottom:20px; }
+    .section-heading span { color: var(--blue-light); }
+    .section-sub { font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:24px; }
+
+    /* ── Benefits tab ── */
+    .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .benefit-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; }
+    .benefit-who { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
+    .benefit-list { list-style: none; }
+    .benefit-list li { font-size: 13px; padding: 5px 0; color: rgba(255,255,255,0.8); display: flex; gap: 8px; }
+    .benefit-list li::before { content: '✓'; color: var(--green-light); }
+
+    /* footer */
+    footer { text-align: center; padding: 40px 24px; color: rgba(255,255,255,0.3); font-size: 13px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 60px; }
+    footer strong { color: rgba(255,255,255,0.6); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Task<span>Link</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('landing')" aria-label="Public Landing Page">🏠 Landing</button>
+    <button class="nav-tab" onclick="showPage('sim')" aria-label="Feature Phone Simulator">📱 Phone Sim</button>
+    <button class="nav-tab" onclick="showPage('ussd')" aria-label="USSD Simulator">*99# USSD</button>
+    <button class="nav-tab" onclick="showPage('trace')" aria-label="Live Flow Trace">📊 Flow Trace</button>
+    <button class="nav-tab" onclick="showPage('benefits')" aria-label="Benefits">💡 Benefits</button>
+    <button class="nav-tab" onclick="showPage('references')" aria-label="References">📖 References <span class="nav-badge">R35</span></button>
+    <button class="nav-tab" onclick="showPage('demo')" aria-label="Demo Controls">🎛️ Demo Controls</button>
+  </div>
+</nav>
+
+<!-- ── LANDING PAGE ──────────────────────────────────────── -->
+<div class="page active" id="page-landing">
+  <div class="hero">
+    <div class="hero-sih">Smart India Hackathon 2026 · PS SIH26089 · Ministry of Cooperation · Team TaskLink 170331</div>
+    <div class="hero-title">TaskLink</div>
+    <div class="hero-tagline">
+      <strong>"Dial or Tap, Zero Commission"</strong><br>
+      The only cooperative gig platform built to reach feature-phone workers by voice, not just by app installs.
+    </div>
+    <div class="hero-badges">
+      <span class="badge badge-orange">0% Platform Commission</span>
+      <span class="badge badge-blue">22 Indic Languages · Bhashini</span>
+      <span class="badge badge-green">Keypad Phone Voice Agent</span>
+      <span class="badge badge-orange">DIGIPIN · Mappls Location</span>
+      <span class="badge badge-blue">DPDP Act 2023 Compliant</span>
+    </div>
+    <div class="hero-sahakar">
+      <em>"Sahakar se Samriddhi"</em> · Rural Development, Urban Betterment
+    </div>
+  </div>
+
+  <!-- R28 Evidence Stats -->
+  <div class="section-heading">Evidence-Based <span>Impact</span></div>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-num" style="color:#22c55e;">6.37L</div>
+      <div class="stat-label">Drivers on Bharat Taxi with zero platform commission</div>
+      <div class="stat-source">NAFSC Sahakar Taxi Scheme 2024</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color:#93c5fd;">23.5M</div>
+      <div class="stat-label">Platform workers in India by 2029-30</div>
+      <div class="stat-source">NITI Aayog: India's Booming Gig Economy (2022)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color:#fdba74;">9.7%</div>
+      <div class="stat-label">Mobile users on keypad-only phones (urban India)</div>
+      <div class="stat-source">MoSPI-NSO CAMS · NSS 79th Round</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color:#fdba74;">12.3%</div>
+      <div class="stat-label">Mobile users on keypad-only phones (rural India)</div>
+      <div class="stat-source">CMS Telecom Subscription Report 2025</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color:#f87171;">20–30%</div>
+      <div class="stat-label">Commission taken by private gig platforms from workers</div>
+      <div class="stat-source">Ola/Swiggy/Zomato published rate cards</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color:#22c55e;">0%</div>
+      <div class="stat-label">TaskLink platform commission — 100% to the cooperative worker</div>
+      <div class="stat-source">DB CHECK constraint + immutable double-entry ledger</div>
+    </div>
+  </div>
+
+  <!-- Problem → Solution Cards -->
+  <div class="section-heading">Problem <span>→</span> Solution</div>
+  <div class="cards-grid">
+    <div class="card problem">
+      <div class="card-icon">📟</div>
+      <div class="card-title">9.7–12.3% of workers use keypad phones</div>
+      <div class="card-desc">Cannot install apps. Locked out of digital gig economy. Private platforms ignore them entirely.</div>
+    </div>
+    <div class="card-arrow">→</div>
+    <div class="card solution">
+      <div class="card-icon">🎙️</div>
+      <div class="card-title">AI Voice Agent in 22 Indic Languages</div>
+      <div class="card-desc">Workers register, accept jobs, hear earnings, and confirm payments by DTMF keypad. Full cooperative parity with app users.</div>
+    </div>
+    <div class="card problem">
+      <div class="card-icon">💸</div>
+      <div class="card-title">20–30% Commission Extracted</div>
+      <div class="card-desc">Private platforms extract ₹200–₹600 from every ₹1,000 job. Workers earn only 70–80% of their own labour's value.</div>
+    </div>
+    <div class="card-arrow">→</div>
+    <div class="card solution">
+      <div class="card-icon">🏛️</div>
+      <div class="card-title">0% Commission Cooperative Model</div>
+      <div class="card-desc">Owned by Primary Labour Cooperative Societies. Funded by flat annual federation subscriptions. ₹0 per-job platform cut — ever.</div>
+    </div>
+    <div class="card problem">
+      <div class="card-icon">🌐</div>
+      <div class="card-title">Language Barriers in Digital Services</div>
+      <div class="card-desc">English-only platforms exclude Hindi, Tamil, Telugu, Bengali and 18 other language speakers from the gig economy.</div>
+    </div>
+    <div class="card-arrow">→</div>
+    <div class="card solution">
+      <div class="card-icon">🇮🇳</div>
+      <div class="card-title">Bhashini: 22 Scheduled Languages</div>
+      <div class="card-desc">All 22 scheduled languages + English. ASR, NMT, TTS via Bhashini MeitY. Noto fonts for every script. RTL for Urdu, Kashmiri, Sindhi.</div>
+    </div>
+  </div>
+
+  <!-- 0% Commission Calculator -->
+  <div class="section-heading">0% Commission <span>Calculator</span></div>
+  <div class="calc-box">
+    <div class="calc-title">See how much more a cooperative worker earns</div>
+    <div class="calc-slider">
+      <label>Monthly Jobs: <strong id="jobs-val">20</strong></label>
+      <input type="range" id="jobs-slider" min="5" max="100" value="20" oninput="updateCalc()" />
+    </div>
+    <div class="calc-slider">
+      <label>Average Job Value: ₹<strong id="rate-val">500</strong></label>
+      <input type="range" id="rate-slider" min="200" max="3000" step="100" value="500" oninput="updateCalc()" />
+    </div>
+    <div class="calc-result">
+      <div class="calc-col old">
+        <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-bottom:6px;">Private Platform (25% cut)</div>
+        <div class="calc-amount" style="color:#f87171;" id="old-earn">₹7,500</div>
+        <div style="font-size:11px; color:rgba(255,255,255,0.4); margin-top:4px;">Worker receives after cut</div>
+      </div>
+      <div class="calc-col new">
+        <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-bottom:6px;">TaskLink Cooperative (0% cut)</div>
+        <div class="calc-amount" style="color:#22c55e;" id="new-earn">₹10,000</div>
+        <div style="font-size:11px; color:rgba(255,255,255,0.4); margin-top:4px;">Worker receives — 100%</div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:16px; font-size:14px; color:#86efac;">
+      Extra earnings per month: <strong id="extra-earn" style="font-size:18px;">₹2,500</strong>
+      = <strong id="extra-pct">25%</strong> more income
+    </div>
+  </div>
+</div>
+
+<!-- ── PHONE SIM ──────────────────────────────────────── -->
+<div class="page" id="page-sim">
+  <div class="section-heading">Feature-Phone <span>Simulator</span></div>
+  <div class="section-sub">Simulate keypad worker registration, job acceptance, and *99# payment flow. Press keys below or type your input.</div>
+  <div class="sim-grid">
+    <div>
+      <div class="phone-shell">
+        <div class="phone-status">
+          <span id="sim-status">📵 Idle</span>
+          <span id="sim-callnum">TaskLink IVR: 1800-xxx-xxxx</span>
+        </div>
+        <div class="phone-screen" id="sim-screen">
+<span class="sys">[TaskLink Simulated IVR Ready]</span>
+<span class="sys">Press "Dial" to connect</span>
+</div>
+        <div id="sms-container"></div>
+        <div class="phone-actions">
+          <button class="phone-btn green" onclick="simDial()" id="dial-btn">📞 Dial</button>
+          <button class="phone-btn red" onclick="simHangup()" id="hangup-btn">🔴 Hang Up</button>
+          <button class="phone-btn blue" onclick="simReset()">🔄 Reset</button>
+        </div>
+        <div class="phone-keypad">
+          <button class="key" onclick="pressKey('1')">1</button>
+          <button class="key" onclick="pressKey('2')">2 ABC</button>
+          <button class="key" onclick="pressKey('3')">3 DEF</button>
+          <button class="key" onclick="pressKey('4')">4 GHI</button>
+          <button class="key" onclick="pressKey('5')">5 JKL</button>
+          <button class="key" onclick="pressKey('6')">6 MNO</button>
+          <button class="key" onclick="pressKey('7')">7 PQRS</button>
+          <button class="key" onclick="pressKey('8')">8 TUV</button>
+          <button class="key" onclick="pressKey('9')">9 WXYZ</button>
+          <button class="key star" onclick="pressKey('*')">* (Repeat)</button>
+          <button class="key" onclick="pressKey('0')">0</button>
+          <button class="key hash" onclick="pressKey('#')"># (Back)</button>
+          <button class="key wide call" onclick="pressKey('CALL')">📞 CALL / CONFIRM</button>
+          <button class="key wide hangup" onclick="pressKey('9')">🚨 9 = Emergency</button>
+        </div>
+      </div>
+      <div style="margin-top:12px; background:rgba(255,255,255,0.04); border-radius:12px; padding:12px; font-size:12px; color:rgba(255,255,255,0.5);">
+        <strong style="color:rgba(255,255,255,0.8);">Flow:</strong> Dial → Language (1=Tamil, 2=English, 3=Hindi) → PIN 1234 → Menu → 1=Availability, 2=Jobs, 3=Earnings, 4=Register New Worker
+      </div>
+    </div>
+    <div>
+      <div style="margin-bottom:16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:10px;">📋 Scenario Launcher</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button class="ctrl-btn primary" onclick="runScenario('register')">🆕 Register Worker by Voice (Tamil)</button>
+          <button class="ctrl-btn primary" onclick="runScenario('accept_job')">✅ Accept Pre-booked Job (Hindi)</button>
+          <button class="ctrl-btn warning" onclick="runScenario('earnings')">💰 Hear Earnings + 0% Proof</button>
+          <button class="ctrl-btn success" onclick="runScenario('customer_book')">📦 Customer Booking by Phone</button>
+          <button class="ctrl-btn danger" onclick="runScenario('emergency')">🚨 Emergency Job (Press 9)</button>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:10px;">📡 Call Trace</div>
+        <div id="call-trace" style="font-size:12px; color:rgba(255,255,255,0.6); max-height:340px; overflow-y:auto; font-family:monospace;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── *99# USSD ──────────────────────────────────────── -->
+<div class="page" id="page-ussd">
+  <div class="section-heading">*99# USSD <span>Simulator</span></div>
+  <div class="section-sub">Simulates NPCI *99# USSD payment flow — works with zero internet. PIN: 1234. Mock bank balance: ₹5,000.</div>
+  <div style="display:flex; gap:32px; flex-wrap:wrap; align-items:flex-start; justify-content:center;">
+    <div class="ussd-shell">
+      <div class="ussd-header">
+        <span>📱 Feature Phone</span>
+        <span id="ussd-balance-display">Balance: ₹5,000</span>
+      </div>
+      <div class="ussd-screen" id="ussd-screen">Welcome to *99#
+NPCI USSD Banking
+[Simulated — No real money]
+
+Dialling *99#...</div>
+      <div class="ussd-input-row">
+        <input class="ussd-input" id="ussd-input" type="text" placeholder="Enter option or amount..." onkeydown="if(event.key==='Enter') ussdSend()" />
+        <button class="ussd-send" onclick="ussdSend()">SEND</button>
+      </div>
+    </div>
+    <div style="max-width:400px;">
+      <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:20px; margin-bottom:16px;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:12px;">🎯 Quick Actions</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button class="ctrl-btn primary" onclick="ussdStart()">▶️ Dial *99#</button>
+          <button class="ctrl-btn success" onclick="ussdPayJob()">💸 Pay for Job (TaskLink booking)</button>
+          <button class="ctrl-btn warning" onclick="ussdCheckBalance()">💰 Check Balance</button>
+          <button class="ctrl-btn danger" onclick="ussdReset()">🔄 Reset USSD</button>
+        </div>
+      </div>
+      <div style="background:rgba(249,115,22,0.1); border:1px solid rgba(249,115,22,0.3); border-radius:12px; padding:16px; font-size:13px;">
+        <strong style="color:#fdba74;">SANDBOX — No Real Money</strong><br><br>
+        This simulates NPCI *99# USSD banking. In production this requires NPCI PSP agreement. Mock bank: SBI · Account: XXXX1234 · PIN: 1234
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FLOW TRACE ──────────────────────────────────────── -->
+<div class="page" id="page-trace">
+  <div class="section-heading">Live <span>Flow Trace</span></div>
+  <div class="section-sub">PPT voice-booking flow diagram — blue=voice/AI, red=payment backend, green=confirmation. Click "Run Flow" to animate.</div>
+  <div class="controls-bar">
+    <select class="ctrl-select" id="trace-scenario">
+      <option value="night_booking">1. Night Booking (11PM, Holiday, Emergency)</option>
+      <option value="surge_booking">2. Dynamic Surge Booking</option>
+      <option value="crew_booking">3. Cooperative Crew Booking (6 workers)</option>
+      <option value="keypad_worker">4. Keypad Worker Voice + *99# USSD</option>
+      <option value="lang_switch">5. Marathi/Telugu Chat Translation</option>
+      <option value="admin_rules">6. Admin Live Rules → Matching Changes</option>
+    </select>
+    <button class="ctrl-btn primary" onclick="runTrace()">▶️ Run Flow</button>
+    <button class="ctrl-btn danger" onclick="clearTrace()">🗑️ Clear</button>
+    <label class="ctrl-label">Speed: <select class="ctrl-select" id="trace-speed"><option value="600">Normal</option><option value="300">Fast</option><option value="1500">Slow</option></select></label>
+  </div>
+  <div class="trace-panel" id="trace-panel">
+    <div style="text-align:center; color:rgba(255,255,255,0.3); padding:40px; font-size:14px;">Select a scenario and press Run Flow ▶️</div>
+  </div>
+</div>
+
+<!-- ── BENEFITS ──────────────────────────────────────── -->
+<div class="page" id="page-benefits">
+  <div class="section-heading">Who <span>Benefits</span></div>
+  <div class="benefits-grid">
+    <div class="benefit-card" style="border-color:rgba(34,197,94,0.3);">
+      <div style="font-size:28px; margin-bottom:10px;">👷</div>
+      <div class="benefit-who">Workers / Artisans</div>
+      <ul class="benefit-list">
+        <li>100% of earnings — zero platform cut</li>
+        <li>Join by phone call, no smartphone needed</li>
+        <li>Jobs in own language (22 languages)</li>
+        <li>Night/holiday premium pay (+25–50%)</li>
+        <li>e-Shram, PMSBY, PMJJBY welfare coverage</li>
+        <li>Fairness: never monopolised by one worker</li>
+        <li>Cooperative member ownership share</li>
+      </ul>
+    </div>
+    <div class="benefit-card" style="border-color:rgba(59,130,246,0.3);">
+      <div style="font-size:28px; margin-bottom:10px;">🏠</div>
+      <div class="benefit-who">Customers / Households</div>
+      <ul class="benefit-list">
+        <li>Lower prices (no 20-30% commission passed on)</li>
+        <li>Transparent price breakdown before booking</li>
+        <li>AI 6-factor best-match worker selection</li>
+        <li>Book by app or phone call, any language</li>
+        <li>Verified Aadhaar eKYC workers only</li>
+        <li>Before/after photo proof</li>
+        <li>DPDP-compliant: location data auto-purged</li>
+      </ul>
+    </div>
+    <div class="benefit-card" style="border-color:rgba(249,115,22,0.3);">
+      <div style="font-size:28px; margin-bottom:10px;">🏛️</div>
+      <div class="benefit-who">Cooperatives / Federations</div>
+      <ul class="benefit-list">
+        <li>Local demand visibility and analytics</li>
+        <li>Under-utilised members surfaced automatically</li>
+        <li>Bulk CSV roster import — no cold start</li>
+        <li>Live rules editor: surge, weights, premiums</li>
+        <li>Flat annual subscription (not per-job)</li>
+        <li>Multi-federation tenancy and RBAC</li>
+        <li>DPDP Act 2023 compliance dashboard</li>
+      </ul>
+    </div>
+  </div>
+  <div style="background: linear-gradient(135deg, rgba(22,101,52,0.2), rgba(30,64,175,0.2)); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px; margin-top: 24px; text-align: center;">
+    <div style="font-size:20px; font-weight:800; margin-bottom:8px;">"Sahakar se Samriddhi" — Prosperity Through Cooperation</div>
+    <div style="font-size:14px; color:rgba(255,255,255,0.65);">Rural Development, Urban Betterment · Empowering 23.5 million gig workers through cooperative digital sovereignty</div>
+  </div>
+</div>
+
+<!-- ── REFERENCES (R35) ──────────────────────────────────────── -->
+<div class="page" id="page-references">
+  <div class="section-heading">References <span>(R35)</span></div>
+  <div class="section-sub">All evidence, standards and technical references cited in the TaskLink SIH 2026 submission.</div>
+  <ul class="ref-list">
+    <li class="ref-item">
+      <span class="ref-num">1</span>
+      <div>
+        <div class="ref-title">Bharat Taxi / Sahakar Taxi Scheme — NAFSC</div>
+        <div class="ref-detail">National Agricultural and Federation Services Cooperative (NAFSC), Ministry of Cooperation, GoI. 6.37 lakh drivers operating at zero commission under the Sahakar Taxi initiative as of 2024. URL: https://nafscl.in/sahakar-taxi</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">2</span>
+      <div>
+        <div class="ref-title">India's Booming Gig and Platform Economy — NITI Aayog</div>
+        <div class="ref-detail">NITI Aayog, Government of India (2022). "India's Booming Gig and Platform Economy: Perspectives and Recommendations on the Future of Work." Estimates 23.5 million platform workers by 2029-30. URL: https://niti.gov.in/reports</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">3</span>
+      <div>
+        <div class="ref-title">NSS 79th Round — Household Social Consumption on ICT (MoSPI CAMS)</div>
+        <div class="ref-detail">Ministry of Statistics and Programme Implementation (MoSPI), NSS 79th Round (2022-23). Table on mobile handset type by rural/urban. 9.7% urban and 12.3% rural mobile users on keypad-only devices. URL: https://mospi.gov.in/nss-79th-round</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">4</span>
+      <div>
+        <div class="ref-title">CMS India Telecom Subscription Reports 2025 — TRAI</div>
+        <div class="ref-detail">Telecom Regulatory Authority of India (TRAI) / CMS. Quarterly telecom subscription data showing feature-phone (non-VoLTE 4G) subscriber breakdown by state. URL: https://trai.gov.in/release-publication/reports/telecom-subscriptions-reports</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">5</span>
+      <div>
+        <div class="ref-title">Multi-State Cooperative Societies Act 2002</div>
+        <div class="ref-detail">Government of India. The Multi-State Cooperative Societies Act 2002 and 2023 Amendment. Provides the legal framework for cooperative federation governance, member voting rights, and democratic management. URL: https://mscs.dac.gov.in</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">6</span>
+      <div>
+        <div class="ref-title">National Cooperative Database — Ministry of Cooperation</div>
+        <div class="ref-detail">Ministry of Cooperation, Government of India. National Cooperative Database tracking registered cooperative societies, federations, and membership across all states. URL: https://ncd.nddb.coop</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">7</span>
+      <div>
+        <div class="ref-title">e-Shram Portal — Ministry of Labour and Employment</div>
+        <div class="ref-detail">Ministry of Labour and Employment, GoI. e-Shram Portal for registration of unorganized workers with UAN (Universal Account Number). Basis for PMSBY and PMJJBY insurance coverage eligibility. URL: https://eshram.gov.in</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">8</span>
+      <div>
+        <div class="ref-title">Bhashini — AI4Bharat / MeitY</div>
+        <div class="ref-detail">Ministry of Electronics and Information Technology (MeitY) / AI4Bharat. Bhashini Digital India Language Platform providing ASR, NMT (translation), and TTS in all 22 scheduled Indian languages. API docs: https://bhashini.gov.in/developer</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">9</span>
+      <div>
+        <div class="ref-title">NPCI UPI and *99# USSD Specifications</div>
+        <div class="ref-detail">National Payments Corporation of India (NPCI). Unified Payments Interface (UPI) protocol and *99# USSD banking specification enabling no-internet payment capability. URL: https://www.npci.org.in/what-we-do/99/product-overview</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">10</span>
+      <div>
+        <div class="ref-title">DIGIPIN — India Post / MapmyIndia (Mappls)</div>
+        <div class="ref-detail">India Post and Survey of India (with MapmyIndia as technical partner). DIGIPIN: Open 10-character digital addressing system dividing India into a 4m×4m grid. Open-source algorithm: https://github.com/IndiaPost/digipin</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">11</span>
+      <div>
+        <div class="ref-title">Digital Personal Data Protection Act 2023 (DPDP Act)</div>
+        <div class="ref-detail">Government of India. The Digital Personal Data Protection Act 2023. Sections 11 (data access), 12 (right to erasure), 8(9) (purpose limitation and data minimisation). URL: https://meity.gov.in/writereaddata/files/Digital_Personal_Data_Protection_Act_2023.pdf</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">12</span>
+      <div>
+        <div class="ref-title">PMSBY — Pradhan Mantri Suraksha Bima Yojana</div>
+        <div class="ref-detail">Ministry of Finance, GoI. Accidental death and disability insurance at ₹20/year for e-Shram registered workers aged 18-70. Coverage: ₹2 lakh. URL: https://jansuraksha.gov.in/pmsby</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">13</span>
+      <div>
+        <div class="ref-title">PMJJBY — Pradhan Mantri Jeevan Jyoti Bima Yojana</div>
+        <div class="ref-detail">Ministry of Finance, GoI. Life insurance at ₹436/year for e-Shram registered workers aged 18-50. Coverage: ₹2 lakh. URL: https://jansuraksha.gov.in/pmjjby</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">14</span>
+      <div>
+        <div class="ref-title">Exotel — Cloud Telephony Platform</div>
+        <div class="ref-detail">Exotel Techcom Pvt. Ltd. Cloud telephony APIs for bidirectional audio streaming, DTMF IVR, and outbound call campaigns. Used for keypad worker voice agent. Docs: https://developer.exotel.com</div>
+      </div>
+    </li>
+    <li class="ref-item">
+      <span class="ref-num">15</span>
+      <div>
+        <div class="ref-title">Noto Fonts — Google</div>
+        <div class="ref-detail">Google Noto Font family providing complete Unicode coverage for all 22 scheduled Indian languages including Noto Sans Ol Chiki (Santali), Noto Sans Meetei Mayek (Manipuri), Noto Nastaliq Urdu. URL: https://fonts.google.com/noto</div>
+      </div>
+    </li>
+  </ul>
+  <footer>
+    <strong>Team TaskLink · ID 170331 · Smart India Hackathon 2026 · Problem Statement SIH26089</strong><br>
+    Ministry of Cooperation, Government of India · Theme: Agriculture, FoodTech and Rural Development
+  </footer>
+</div>
+
+<!-- ── DEMO CONTROLS ──────────────────────────────────────── -->
+<div class="page" id="page-demo">
+  <div class="section-heading">🎛️ Demo <span>Control Room</span></div>
+  <div class="section-sub">Inject demand, trigger outbound calls, switch payment outcomes, travel time. For live judge demonstrations.</div>
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">
+
+    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:20px;">
+      <div style="font-weight:700; margin-bottom:14px; font-size:15px;">⏰ Time Travel</div>
+      <select class="ctrl-select" id="demo-time" style="width:100%; margin-bottom:10px;">
+        <option value="now">Now (use real time)</option>
+        <option value="2300">11:00 PM (Night Premium active)</option>
+        <option value="0300">3:00 AM (Deep night)</option>
+        <option value="holiday">Today = National Holiday (PMSBY holiday)</option>
+        <option value="holiday_night">11 PM + Holiday (Max premium stacking)</option>
+      </select>
+      <button class="ctrl-btn primary" style="width:100%;" onclick="applyTimeTravel()">Apply Time Travel</button>
+      <div id="time-status" style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:8px;"></div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:20px;">
+      <div style="font-weight:700; margin-bottom:14px; font-size:15px;">📊 Demand Injector</div>
+      <label class="ctrl-label" style="margin-bottom:6px;">Service to surge:</label>
+      <select class="ctrl-select" id="surge-service" style="width:100%; margin-bottom:10px;">
+        <option>ELECTRICAL</option><option>PLUMBING</option><option>CARPENTRY</option>
+        <option>CLEANING</option><option>TRANSPORT</option><option>GROUP_LABOUR</option>
+      </select>
+      <label class="ctrl-label" style="margin-bottom:6px;">Simulated open requests:</label>
+      <input class="ctrl-input" id="surge-count" type="number" value="8" style="width:100%; margin-bottom:10px;" />
+      <button class="ctrl-btn warning" style="width:100%;" onclick="injectDemand()">Inject Surge Demand</button>
+      <div id="surge-status" style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:8px;"></div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:20px;">
+      <div style="font-weight:700; margin-bottom:14px; font-size:15px;">💳 Payment Outcome Switch</div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <button class="ctrl-btn success" onclick="setPaymentOutcome('success')">✅ Next payment: SUCCESS</button>
+        <button class="ctrl-btn danger" onclick="setPaymentOutcome('failure')">❌ Next payment: FAILURE</button>
+        <button class="ctrl-btn warning" onclick="setPaymentOutcome('pending')">⏳ Next payment: PENDING</button>
+        <button class="ctrl-btn primary" onclick="setPaymentOutcome('cod')">💵 Force COD confirmation</button>
+      </div>
+      <div id="payment-status" style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:10px;">Current: auto (success)</div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:20px;">
+      <div style="font-weight:700; margin-bottom:14px; font-size:15px;">📞 Outbound Job Call</div>
+      <label class="ctrl-label" style="margin-bottom:6px;">Worker phone:</label>
+      <select class="ctrl-select" id="outbound-worker" style="width:100%; margin-bottom:10px;">
+        <option value="+91 98421 00001">Karthik (Electrician, Smartphone)</option>
+        <option value="+91 98421 00004">Arumugam (Painter, Keypad 📟)</option>
+        <option value="+91 98431 00018">T. Boopathi (Mason Lead, Smartphone)</option>
+      </select>
+      <label class="ctrl-label" style="margin-bottom:6px;">Job area:</label>
+      <input class="ctrl-input" id="outbound-area" value="Gandhipuram, CBE" style="width:100%; margin-bottom:10px;" />
+      <button class="ctrl-btn primary" style="width:100%;" onclick="triggerOutbound()">📞 Trigger Outbound Call</button>
+      <div id="outbound-status" style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:8px;"></div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:20px;">
+      <div style="font-weight:700; margin-bottom:14px; font-size:15px;">🗺️ Cell-ID Tower Picker</div>
+      <label class="ctrl-label" style="margin-bottom:6px;">Active tower (for location):</label>
+      <select class="ctrl-select" id="cell-tower" style="width:100%; margin-bottom:10px;">
+        <option value="CBE-CELL-101">CBE-CELL-101: Gandhipuram (±800m)</option>
+        <option value="CBE-CELL-102">CBE-CELL-102: Peelamedu (±1200m)</option>
+        <option value="CBE-CELL-103">CBE-CELL-103: Singanallur (±1000m)</option>
+        <option value="TPR-CELL-201">TPR-CELL-201: Tirupur City (±900m)</option>
+        <option value="TPR-CELL-202">TPR-CELL-202: Palladam (±2200m)</option>
+        <option value="CBE-CELL-104">CBE-CELL-104: Sulur Rural (±2500m)</option>
+      </select>
+      <button class="ctrl-btn primary" style="width:100%;" onclick="selectTower()">📡 Set Active Cell Tower</button>
+      <div id="tower-status" style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:8px;">DPDP consent required for lookup</div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:20px;">
+      <div style="font-weight:700; margin-bottom:14px; font-size:15px;">🔄 Full Reset</div>
+      <div style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:14px; line-height:1.6;">Resets all demo state: time travel, payment outcome, injected demand, and phone simulator to initial state.</div>
+      <button class="ctrl-btn danger" style="width:100%;" onclick="resetAll()">🔄 Reset Everything</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Page Navigation ── */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+/* ── Calculator ── */
+function updateCalc() {
+  const jobs = +document.getElementById('jobs-slider').value;
+  const rate = +document.getElementById('rate-slider').value;
+  document.getElementById('jobs-val').textContent = jobs;
+  document.getElementById('rate-val').textContent = rate;
+  const total = jobs * rate;
+  const old = Math.round(total * 0.75);
+  document.getElementById('old-earn').textContent = '₹' + old.toLocaleString('en-IN');
+  document.getElementById('new-earn').textContent = '₹' + total.toLocaleString('en-IN');
+  const extra = total - old;
+  document.getElementById('extra-earn').textContent = '₹' + extra.toLocaleString('en-IN');
+  document.getElementById('extra-pct').textContent = '25%';
+}
+updateCalc();
+
+/* ── Phone Simulator ── */
+let simState = 'idle';
+let simLang = 'en';
+let simStep = 0;
+const screen = () => document.getElementById('sim-screen');
+const trace = () => document.getElementById('call-trace');
+
+function appendScreen(text, cls) {
+  const div = document.createElement('span');
+  div.className = cls || 'sys';
+  div.textContent = '\n' + text;
+  screen().appendChild(div);
+  screen().scrollTop = screen().scrollHeight;
+}
+
+function appendTrace(text) {
+  const div = document.createElement('div');
+  div.textContent = '[' + new Date().toLocaleTimeString() + '] ' + text;
+  div.style.marginBottom = '4px';
+  div.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+  div.style.paddingBottom = '4px';
+  trace().appendChild(div);
+  trace().scrollTop = trace().scrollHeight;
+}
+
+function simDial() {
+  if (simState !== 'idle') return;
+  simState = 'welcome';
+  document.getElementById('sim-status').textContent = '📞 Connected';
+  appendScreen('\n--- CALL CONNECTED ---', 'sys');
+  appendScreen('TaskLink IVR: 1800-xxx-xxxx', 'sys');
+  appendScreen('Agent: ' + (simLang === 'ta'
+    ? 'வணக்கம்! டாஸ்க்லிங்க் சேவைக்கு நல்வரவு. தமிழிற்கு 1, For English 2, हिंदी 3.'
+    : 'Welcome to TaskLink Cooperative Services. Tamil: 1, English: 2, Hindi: 3.'), 'agent');
+  appendTrace('CALL_START → VoiceGateway POST /voice/sessions');
+  appendTrace('SESSION_ID: sim-' + Math.random().toString(36).substr(2, 8));
+}
+
+function pressKey(key) {
+  if (simState === 'idle') return;
+  appendScreen('You pressed: ' + key, 'user');
+  appendTrace('DTMF_INPUT: ' + key);
+
+  if (simState === 'welcome') {
+    if (key === '1') { simLang = 'ta'; simState = 'pin'; appendScreen('Agent: ' + 'மொழி தமிழ் தேர்வு. உங்கள் 4 இலக்க PIN உள்ளிடவும். (1234 demo PIN)', 'agent'); }
+    else if (key === '2') { simLang = 'en'; simState = 'pin'; appendScreen('Agent: English selected. Enter your 4-digit PIN. (Demo PIN: 1234)', 'agent'); }
+    else if (key === '3') { simLang = 'hi'; simState = 'pin'; appendScreen('Agent: हिंदी चुना गया। अपना 4 अंकों का PIN डालें। (Demo: 1234)', 'agent'); }
+  } else if (simState === 'pin') {
+    simState = 'menu';
+    appendScreen('Agent: ' + (simLang === 'ta' ? 'அங்கீகரிக்கப்பட்டது ✓. மெனு: 1=தயார் நிலை, 2=வேலைகள், 3=வருமானம், 4=பதிவு'
+      : simLang === 'hi' ? 'प्रमाणित ✓. मेनू: 1=उपलब्धता, 2=आज के काम, 3=कमाई, 4=नया पंजीकरण'
+      : 'Authenticated ✓. Menu: 1=Availability, 2=Today\'s Jobs, 3=Earnings, 4=Register New Worker, 9=Emergency'), 'agent');
+    appendTrace('AUTH_SUCCESS → user:worker-demo-01');
+  } else if (simState === 'menu') {
+    if (key === '1') { simState = 'avail'; appendScreen('Agent: ' + (simLang === 'ta' ? 'இன்று கிடைக்கிறீர்களா? 1=ஆம், 2=இல்லை' : 'Available today? 1=Yes, 2=No'), 'agent'); }
+    else if (key === '2') { appendScreen('Agent: Today\'s pre-booked job: 4:00 PM, Gandhipuram, Electrical Rewiring. Pay: ₹350 (0% commission). Press 1 to confirm, 2 to cancel.', 'agent'); simState = 'job_confirm'; }
+    else if (key === '3') { appendScreen('Agent: October earnings: ₹1,312. Commission deducted: ₹0.00. 100% is yours. Keep it up!', 'agent'); appendScreen('[Bhashini TTS: Tamil earnings spoken]', 'sys'); }
+    else if (key === '4') { appendScreen('Agent: New worker registration. Name: (speak or type)', 'agent'); simState = 'register'; }
+    else if (key === '9') { appendScreen('[EMERGENCY ESCALATION] Connecting to helpdesk...', 'agent'); appendTrace('EMERGENCY_9 → helpdesk escalation'); }
+  } else if (simState === 'avail') {
+    if (key === '1') { appendScreen('Agent: ✓ You are now ONLINE. Customers can book you.', 'agent'); appendTrace('WORKER_ONLINE → store.updateWorkerOnlineStatus(true)'); }
+    else { appendScreen('Agent: ✓ Status set to OFFLINE. No new bookings.', 'agent'); }
+    simState = 'menu';
+  } else if (simState === 'job_confirm') {
+    if (key === '1') { appendScreen('Agent: Job ACCEPTED. Customer notified. Pay via *99# or COD on completion.', 'agent'); appendTrace('JOB_ACCEPTED → booking state → accepted'); showSMS('TL-JOB: Accepted job at Gandhipuram 4PM. Customer: Priya Rajan. Pay: Rs.350. *99# UPI: tasklink.b-x1234@rbl'); }
+    else { appendScreen('Agent: Job declined. No penalty. Back to menu.', 'agent'); simState = 'menu'; }
+  } else if (simState === 'register') {
+    appendScreen('Agent: Worker registration complete (voice). SMS sent with Worker ID: W-IVR-' + Math.floor(Math.random()*9000+1000), 'agent');
+    showSMS('TaskLink: Registration pending verification. Worker ID: W-IVR-2891. Society admin will verify within 24h. 0% commission always.');
+    appendTrace('VOICE_REGISTER → admin.verification_queue INSERT');
+    simState = 'menu';
+  }
+}
+
+function simHangup() { appendScreen('\n--- CALL ENDED ---', 'sys'); simState = 'idle'; document.getElementById('sim-status').textContent = '📵 Idle'; appendTrace('CALL_END → session closed'); }
+function simReset() { screen().innerHTML = '<span class="sys">[TaskLink Simulated IVR Ready]\nPress "Dial" to connect</span>'; trace().innerHTML = ''; document.getElementById('sms-container').innerHTML = ''; simState = 'idle'; document.getElementById('sim-status').textContent = '📵 Idle'; }
+
+function showSMS(text) {
+  const box = document.getElementById('sms-container');
+  const sms = document.createElement('div');
+  sms.className = 'sms-box';
+  sms.innerHTML = '📲 SMS: ' + text;
+  box.appendChild(sms);
+}
+
+function runScenario(type) {
+  simReset();
+  setTimeout(() => simDial(), 300);
+  if (type === 'register') { setTimeout(() => pressKey('1'), 1000); setTimeout(() => pressKey('1234'), 1800); setTimeout(() => pressKey('4'), 2600); setTimeout(() => pressKey('CALL'), 3400); }
+  else if (type === 'accept_job') { setTimeout(() => pressKey('2'), 1000); setTimeout(() => pressKey('1234'), 1800); setTimeout(() => pressKey('2'), 2600); setTimeout(() => pressKey('1'), 3400); }
+  else if (type === 'earnings') { setTimeout(() => pressKey('2'), 1000); setTimeout(() => pressKey('1234'), 1800); setTimeout(() => pressKey('3'), 2600); }
+  else if (type === 'customer_book') { appendScreen('\n[Customer booking flow: service → location → price → confirm]', 'sys'); }
+  else if (type === 'emergency') { setTimeout(() => pressKey('1'), 1000); setTimeout(() => pressKey('1234'), 1800); setTimeout(() => pressKey('9'), 2600); }
+}
+
+/* ── USSD Simulator ── */
+let ussdState = 'idle';
+let ussdBalance = 5000;
+const ussdScreen = () => document.getElementById('ussd-screen');
+
+function ussdWrite(text) { ussdScreen().textContent = text; }
+function ussdAppend(text) { ussdScreen().textContent += '\n' + text; }
+
+function ussdStart() {
+  ussdState = 'main';
+  ussdWrite('*99# USSD Banking\n[NPCI · SANDBOX - No Real Money]\n\n1. Send Money\n2. Request Money\n3. Check Balance\n4. My Profile\n5. Pending Requests\n6. Transactions\n7. UPI PIN\n\nEnter option:');
+}
+
+function ussdSend() {
+  const val = document.getElementById('ussd-input').value.trim();
+  document.getElementById('ussd-input').value = '';
+  if (!val) return;
+  ussdAppend('> ' + val);
+
+  if (ussdState === 'idle') { ussdStart(); return; }
+  if (ussdState === 'main') {
+    if (val === '1') { ussdState = 'send_vpa'; ussdWrite('Send Money\n\nEnter VPA/UPI ID:\n(e.g. tasklink.b-x1234@rbl)'); }
+    else if (val === '3') { ussdWrite('Balance Enquiry\n\nSBI · XXXX1234\nBalance: ₹' + ussdBalance.toLocaleString('en-IN') + '\n\nPress 0 to go back.'); ussdState = 'back'; }
+    else { ussdWrite('Invalid option. Press 0 to go back.'); }
+  } else if (ussdState === 'send_vpa') {
+    ussdState = 'send_amount';
+    ussdWrite('Send Money\nTo: ' + val + '\n\nEnter amount (₹):');
+  } else if (ussdState === 'send_amount') {
+    ussdState = 'send_pin';
+    ussdWrite('Send Money\nAmount: ₹' + val + '\n\nEnter UPI PIN (4-digit):\n[SANDBOX: PIN = 1234]');
+  } else if (ussdState === 'send_pin') {
+    if (val === '1234') {
+      ussdBalance -= 350;
+      document.getElementById('ussd-balance-display').textContent = 'Balance: ₹' + ussdBalance.toLocaleString('en-IN');
+      ussdState = 'done';
+      ussdWrite('✅ PAYMENT SUCCESSFUL\n\n₹350 sent\nTxn ID: NPCI' + Date.now() + '\n\n[TaskLink booking marked PAID]\n[Worker payout: ₹350 (100%)]\n[Platform commission: ₹0.00 (0%)]\n\nSMS sent to worker and customer.\n\nPress 0 to exit.');
+    } else {
+      ussdWrite('❌ Incorrect PIN. Press 0 to go back.'); ussdState = 'back';
+    }
+  } else if (ussdState === 'back' || ussdState === 'done') {
+    if (val === '0') { ussdState = 'main'; ussdStart(); }
+  }
+}
+
+function ussdPayJob() { ussdState = 'send_vpa'; ussdWrite('TaskLink Payment\nBooking: TL-2026-00011\n\nUPI ID: tasklink.b-x1234@rbl\nAmount: ₹350\n\nEnter UPI PIN (1234):'); ussdState = 'send_pin'; }
+function ussdCheckBalance() { ussdState = 'main'; ussdSend.call({}, '3'); ussdState = 'back'; ussdWrite('Balance Enquiry\n\nSBI · XXXX1234\nAvailable Balance: ₹' + ussdBalance.toLocaleString('en-IN') + '\n\nEnter 0 to go back.'); }
+function ussdReset() { ussdState = 'idle'; ussdBalance = 5000; ussdWrite('*99# USSD Banking Simulator\n[SANDBOX — No Real Money]\n\nPress "Dial *99#" or type any option.'); document.getElementById('ussd-balance-display').textContent = 'Balance: ₹5,000'; }
+
+/* ── Flow Trace ── */
+const SCENARIOS = {
+  night_booking: [
+    { cls: 'trace-voice', title: '🎙️ Customer Calls IVR (11 PM)', detail: 'Voice Agent answers in Tamil. Detects night window: 22:00-06:00 active.' },
+    { cls: 'trace-voice', title: '🌙 Night Premium Applied (+25%)', detail: 'Pricing: ₹350 base + ₹87.50 night = ₹437.50. 0% commission.' },
+    { cls: 'trace-voice', title: '📅 Holiday Detected', detail: 'Today: Gazetted national holiday. +50% = ₹175. Stacking: additive.' },
+    { cls: 'trace-voice', title: '🚨 Emergency Flag Set', detail: 'Booking type: emergency. +30% = ₹105. Total: ₹717.50. Broadcast to 5 nearest workers.' },
+    { cls: 'trace-voice', title: '📞 Outbound: Karthik Subramanian (keypad)', detail: 'TaskLink IVR dials worker. Speaks job in Tamil. "₹717 ஒரு வேலை, 1 அழுத்தவும்".' },
+    { cls: 'trace-pay', title: '💳 *99# USSD Initiated', detail: 'Customer dials *99#. Virtual UPI ID: tasklink.b-001@rbl. Bank: SBI.' },
+    { cls: 'trace-pay', title: '🏦 NPCI → Bank Debit', detail: '[MOCK] SBI core API debit ₹717.50. TxnRef: NPCI2026100811PM.' },
+    { cls: 'trace-pay', title: '📡 Webhook → TaskLink Server', detail: 'POST /api/payments/webhook event=payment.captured. Booking → paid.' },
+    { cls: 'trace-confirm', title: '✅ Settlement: Worker ₹717.50 (100%)', detail: 'Ledger: customer→escrow→worker. Platform commission: ₹0.00.' },
+    { cls: 'trace-sms', title: '📲 SMS Dispatched', detail: 'Customer (Tamil): "TaskLink: ₹717 paid. Worker Karthik en route." Worker: "Pay settled: ₹717 UPI."' },
+  ],
+  surge_booking: [
+    { cls: 'trace-voice', title: '📊 Demand Ratio Computed', detail: 'PostGIS grid: 8 open_requests / 5 available_workers = 1.6 ratio.' },
+    { cls: 'trace-voice', title: '📈 Surge Multiplier: 1.30x', detail: 'surge = 1 + 0.5 × (1.6 - 1.0) = 1.30. Capped at 1.50x.' },
+    { cls: 'trace-voice', title: '💬 Customer Banner (Tamil)', detail: '"அதிக தேவை: +30% சர்ஜ். 100% தொழிலாளரின் வருமானம்."' },
+    { cls: 'trace-voice', title: '🎯 6-Factor Matching', detail: 'POST /match → Python FastAPI. Top: Karthik (0.921), Divya (0.887), Velmurugan (0.843).' },
+    { cls: 'trace-confirm', title: '✅ Job Offered & Accepted', detail: 'Worker accepts via app. Booking state: offered → accepted. ETA: 12 min.' },
+    { cls: 'trace-pay', title: '💰 Quote Locked 10min', detail: 'expiresAt: +10min. Total: ₹350 × 1.30 = ₹455. 0% commission.' },
+  ],
+  crew_booking: [
+    { cls: 'trace-voice', title: '👥 Crew Booking Request', detail: 'Customer: "6 agri workers for 2 days." Group: Siruvani Organic Farm Harvest Crew.' },
+    { cls: 'trace-voice', title: '🎯 Crew Leader Notified', detail: 'IVR calls R. Dharmalingam (Lead). "6-member crew job 2 days ₹18,000 total. Press 1 to accept."' },
+    { cls: 'trace-confirm', title: '✅ Leader Accepts for Crew', detail: 'All 6 members auto-confirmed. Attendance check-in at job site required.' },
+    { cls: 'trace-pay', title: '💳 Crew Payout Split', detail: 'Lead 40% = ₹7,200. Members 4×15% = ₹2,700 each. Total = ₹18,000. Commission: ₹0.' },
+    { cls: 'trace-sms', title: '📲 SMS to Each Member', detail: 'Each of 6 workers receives SMS: own payout amount and job details in their language.' },
+    { cls: 'trace-confirm', title: '✅ Ledger: ₹0 Platform Cut', detail: '6 separate payout entries. CHECK constraint verified: platform_commission = 0.00.' },
+  ],
+  keypad_worker: [
+    { cls: 'trace-voice', title: '📟 Keypad Worker: Arumugam Natarajan', detail: 'Phone type: keypad. Pre-booked jobs only. Cannot accept on-demand/emergency.' },
+    { cls: 'trace-voice', title: '📞 Outbound Call Triggered', detail: 'TaskLink IVR dials +91 98421 00004. "புதிய வேலை: ₹350, காந்திபுரம். 1 ஏற்க, 2 மறு."' },
+    { cls: 'trace-voice', title: '✅ Worker Presses 1 (Accept)', detail: 'DTMF captured. Booking state → accepted. Customer notified.' },
+    { cls: 'trace-pay', title: '*99# USSD Payment', detail: 'Customer dials *99#. VPA: tasklink.b-002@rbl. PIN 1234. ₹350 debit.' },
+    { cls: 'trace-pay', title: '💵 Keypad Worker Earns via UPI', detail: 'Even without smartphone: UPI settlement to arumugam.nataraj@sbi. T+0 mock.' },
+    { cls: 'trace-sms', title: '📲 SMS: Tamil Receipt', detail: '"TaskLink: ₹350 UPI கட்டணம். நன்றி — 0% கமிஷன்."' },
+  ],
+  lang_switch: [
+    { cls: 'trace-voice', title: '🌐 Customer: Marathi (mr)', detail: 'Priya books in Marathi. UI language: mr. Chat messages sent in Marathi.' },
+    { cls: 'trace-voice', title: '🌐 Worker: Telugu (te)', detail: 'Worker Ravi speaks Telugu. Chat received in Telugu via Bhashini NMT.' },
+    { cls: 'trace-voice', title: '🔄 Real-time Translation', detail: 'POST /api/bhashini/translate {from:"mr", to:"te", text:"काम कधी सुरू होणार?"}' },
+    { cls: 'trace-voice', title: '📨 Bilingual Chat', detail: 'Both see original + translation. "काम कब शुरू होगा?" → "పని ఎప్పుడు మొదలవుతుంది?"' },
+    { cls: 'trace-confirm', title: '✅ Language Switch Transparent', detail: 'Same job, same booking. Language is presentation-layer only. No data change.' },
+  ],
+  admin_rules: [
+    { cls: 'trace-voice', title: '⚙️ Admin: Edit Matching Weights', detail: 'S. Ramanathan (Federation Admin) opens Rules tab. Changes distance: 20%→30%.' },
+    { cls: 'trace-pay', title: '💾 PUT /api/admin/rules/matching-weights', detail: '{"federationId":"f1111...","skill":0.20,"distance":0.30,"availability":0.15,...}' },
+    { cls: 'trace-pay', title: '📋 Audit Log Written', detail: 'audit_log INSERT: action=UPDATE_MATCHING_WEIGHTS, old={distance:0.20}, new={distance:0.30}.' },
+    { cls: 'trace-confirm', title: '✅ Live: Next Match Changed', detail: 'POST /match → new weights applied. Nearby worker now ranked #1 (was #3).' },
+    { cls: 'trace-voice', title: '📊 Admin Sees Difference', detail: 'Admin dashboard refreshes. Under-utilised workers in Sulur now surfaced.' },
+  ],
+};
+
+function runTrace() {
+  const scenario = document.getElementById('trace-scenario').value;
+  const speed = +document.getElementById('trace-speed').value;
+  clearTrace();
+  const steps = SCENARIOS[scenario] || [];
+  steps.forEach((step, i) => {
+    setTimeout(() => {
+      const div = document.createElement('div');
+      div.className = 'trace-step ' + step.cls;
+      div.innerHTML = '<span class="trace-time">' + new Date().toLocaleTimeString() + '</span><div class="trace-step-title">' + step.title + '</div><div class="trace-step-detail">' + step.detail + '</div>';
+      document.getElementById('trace-panel').appendChild(div);
+      document.getElementById('trace-panel').scrollTop = 99999;
+    }, i * speed);
+  });
+}
+
+function clearTrace() { document.getElementById('trace-panel').innerHTML = ''; }
+
+/* ── Demo Controls ── */
+function applyTimeTravel() {
+  const t = document.getElementById('demo-time').value;
+  document.getElementById('time-status').textContent = '✓ Time set: ' + document.getElementById('demo-time').selectedOptions[0].text;
+}
+function injectDemand() {
+  const svc = document.getElementById('surge-service').value;
+  const count = document.getElementById('surge-count').value;
+  document.getElementById('surge-status').textContent = '✓ Injected ' + count + ' open requests for ' + svc;
+}
+function setPaymentOutcome(type) {
+  const labels = { success:'✅ SUCCESS', failure:'❌ FAILURE', pending:'⏳ PENDING', cod:'💵 COD' };
+  document.getElementById('payment-status').textContent = 'Current: ' + (labels[type] || type);
+}
+function triggerOutbound() {
+  const worker = document.getElementById('outbound-worker').value;
+  const area = document.getElementById('outbound-area').value;
+  document.getElementById('outbound-status').textContent = '📞 Calling ' + worker + ' for job at ' + area + '...';
+  setTimeout(() => { document.getElementById('outbound-status').textContent = '✅ Worker answered, press 1 accepted.'; }, 2000);
+}
+function selectTower() {
+  const tower = document.getElementById('cell-tower').value;
+  document.getElementById('tower-status').textContent = '✓ Active tower: ' + tower + '. DPDP consent: required.';
+}
+function resetAll() {
+  simReset(); ussdReset(); clearTrace();
+  document.getElementById('time-status').textContent = '';
+  document.getElementById('surge-status').textContent = '';
+  document.getElementById('payment-status').textContent = 'Current: auto (success)';
+  document.getElementById('outbound-status').textContent = '';
+  document.getElementById('tower-status').textContent = 'DPDP consent required for lookup';
+  alert('✅ All demo state reset to defaults.');
+}
+</script>
+</body>
+</html>

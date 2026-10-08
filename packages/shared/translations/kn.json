@@ -1,0 +1,128 @@
+{
+  "app_title": {
+    "sourceText": "TaskLink",
+    "translatedText": "[Bhashini-kn] TaskLink",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "app_tagline": {
+    "sourceText": "Cooperative Gig-Services at 0% Commission",
+    "translatedText": "[Bhashini-kn] Cooperative Gig-Services at 0% Commission",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "zero_commission_badge": {
+    "sourceText": "0% Platform Fee - 100% to Worker",
+    "translatedText": "[Bhashini-kn] 0% Platform Fee - 100% to Worker",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "search_placeholder": {
+    "sourceText": "Search electrician, plumber, painter...",
+    "translatedText": "[Bhashini-kn] Search electrician, plumber, painter...",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "filter_service": {
+    "sourceText": "Service",
+    "translatedText": "[Bhashini-kn] Service",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "filter_rating": {
+    "sourceText": "Min Rating",
+    "translatedText": "[Bhashini-kn] Min Rating",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "filter_distance": {
+    "sourceText": "Distance",
+    "translatedText": "[Bhashini-kn] Distance",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "filter_language": {
+    "sourceText": "Language",
+    "translatedText": "[Bhashini-kn] Language",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "filter_available_now": {
+    "sourceText": "Available Now",
+    "translatedText": "[Bhashini-kn] Available Now",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "filter_crews_only": {
+    "sourceText": "Crews / Groups Only",
+    "translatedText": "[Bhashini-kn] Crews / Groups Only",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "map_view": {
+    "sourceText": "Map View",
+    "translatedText": "[Bhashini-kn] Map View",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "list_view": {
+    "sourceText": "List View",
+    "translatedText": "[Bhashini-kn] List View",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "book_now": {
+    "sourceText": "Book Worker",
+    "translatedText": "[Bhashini-kn] Book Worker",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "pre_book_only": {
+    "sourceText": "Pre-book only (Voice/Keypad)",
+    "translatedText": "[Bhashini-kn] Pre-book only (Voice/Keypad)",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "verified_society": {
+    "sourceText": "Verified Cooperative Member",
+    "translatedText": "[Bhashini-kn] Verified Cooperative Member",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "digipin_label": {
+    "sourceText": "DIGIPIN (Digital Postal Code)",
+    "translatedText": "[Bhashini-kn] DIGIPIN (Digital Postal Code)",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "digipin_placeholder": {
+    "sourceText": "e.g. 78C-K2M-9Q2F",
+    "translatedText": "[Bhashini-kn] e.g. 78C-K2M-9Q2F",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "why_this_worker": {
+    "sourceText": "Why this worker? (6-Factor Score)",
+    "translatedText": "[Bhashini-kn] Why this worker? (6-Factor Score)",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "night_premium_banner": {
+    "sourceText": "Night window active (+25% premium directly to worker)",
+    "translatedText": "[Bhashini-kn] Night window active (+25% premium directly to worker)",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "holiday_premium_banner": {
+    "sourceText": "Cooperative holiday (+50% premium directly to worker)",
+    "translatedText": "[Bhashini-kn] Cooperative holiday (+50% premium directly to worker)",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  },
+  "how_tasklink_funded": {
+    "sourceText": "How TaskLink is funded: Flat Cooperative Subscription",
+    "translatedText": "[Bhashini-kn] How TaskLink is funded: Flat Cooperative Subscription",
+    "status": "needs_human_review",
+    "generatedAt": "2026-10-07T13:35:09.438Z"
+  }
+}

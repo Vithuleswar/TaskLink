@@ -1,0 +1,364 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "TaskLink Core API",
+    "version": "1.0.0",
+    "description": "Cooperative-owned gig-services marketplace at 0% platform commission (SIH 2026, SIH26089)"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000",
+      "description": "Local Development Server"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Healthcheck endpoint",
+        "responses": {
+          "200": { "description": "API Gateway is operational" }
+        }
+      }
+    },
+    "/api/auth/otp/request": {
+      "post": {
+        "summary": "Request a phone OTP for login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phone": { "type": "string", "example": "+919842100001" },
+                  "role": { "type": "string", "enum": ["customer", "worker", "society_admin", "federation_admin"] }
+                },
+                "required": ["phone"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OTP generated and dispatched" }
+        }
+      }
+    },
+    "/api/auth/otp/verify": {
+      "post": {
+        "summary": "Verify OTP and obtain JWT Bearer token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phone": { "type": "string" },
+                  "otp": { "type": "string", "example": "123456" }
+                },
+                "required": ["phone", "otp"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Authentication successful" }
+        }
+      }
+    },
+    "/api/workers/onboard": {
+      "post": {
+        "summary": "Worker onboarding (app path)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fullName": { "type": "string" },
+                  "phoneType": { "type": "string", "enum": ["smartphone", "keypad"] },
+                  "societyId": { "type": "string" },
+                  "membershipId": { "type": "string" },
+                  "payoutUpiId": { "type": "string" },
+                  "yearsExperience": { "type": "number" }
+                },
+                "required": ["societyId", "membershipId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Worker profile created and sent to verification queue" },
+          "400": { "description": "Validation error" }
+        }
+      }
+    },
+    "/api/kyc/aadhaar/otp": {
+      "post": {
+        "summary": "Request Aadhaar OTP for e-KYC verification",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "aadhaarNumber": { "type": "string", "example": "9999 9999 9012" },
+                  "workerName": { "type": "string", "example": "Karthik Subramanian" },
+                  "consentGiven": { "type": "boolean", "example": true }
+                },
+                "required": ["aadhaarNumber", "consentGiven"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Aadhaar OTP dispatched to UIDAI registered mobile number" },
+          "400": { "description": "Invalid Aadhaar number or missing DPDP consent" }
+        }
+      }
+    },
+    "/api/kyc/aadhaar/verify": {
+      "post": {
+        "summary": "Verify Aadhaar OTP and retrieve demographic e-KYC profile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sessionId": { "type": "string" },
+                  "otp": { "type": "string", "example": "123456" },
+                  "workerId": { "type": "string" }
+                },
+                "required": ["sessionId", "otp"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "e-KYC verified; masked Aadhaar and reference stored" },
+          "400": { "description": "Invalid or expired OTP" }
+        }
+      }
+    },
+    "/api/kyc/aadhaar/status/{workerId}": {
+      "get": {
+        "summary": "Query Aadhaar e-KYC verification status for a worker",
+        "parameters": [
+          { "name": "workerId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Aadhaar e-KYC verification status and masked Aadhaar" },
+          "404": { "description": "Worker not found" }
+        }
+      }
+    },
+    "/api/admin/verification-queue": {
+      "get": {
+        "summary": "Get pending worker onboarding requests for society admin",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Pending workers list" }
+        }
+      }
+    },
+    "/api/admin/workers/{id}/approve": {
+      "post": {
+        "summary": "Approve worker and make visible to customers",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Worker approved" }
+        }
+      }
+    },
+    "/api/admin/roster/import": {
+      "post": {
+        "summary": "Bulk roster import via CSV",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "csvContent": { "type": "string" },
+                  "societyId": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Import result report" }
+        }
+      }
+    },
+    "/api/bhashini/translate": {
+      "post": {
+        "summary": "Translate dynamic text through Bhashini Indic pipeline",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": { "type": "string" },
+                  "sourceLang": { "type": "string", "example": "ta" },
+                  "targetLang": { "type": "string", "example": "en" }
+                },
+                "required": ["text"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Translated text" }
+        }
+      }
+    },
+    "/api/consent": {
+      "post": {
+        "summary": "Record DPDP Act 2023 opt-in consent",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "purpose": { "type": "string", "enum": ["approximate_location", "call_recording_transcript", "communications"] },
+                  "languageShown": { "type": "string" }
+                },
+                "required": ["purpose"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Consent recorded" }
+        }
+      }
+    },
+    "/api/bookings/quote": {
+      "post": {
+        "summary": "Request transparent price quote with dynamic pricing, premiums, and 0% commission",
+        "responses": { "200": { "description": "Quote generated with full transparency" } }
+      }
+    },
+    "/api/bookings": {
+      "post": {
+        "summary": "Create booking (scheduled, on-demand, or emergency)",
+        "responses": { "201": { "description": "Booking created" } }
+      }
+    },
+    "/api/bookings/{id}": {
+      "get": {
+        "summary": "Get booking details and ledger breakdown",
+        "responses": { "200": { "description": "Booking details" } }
+      }
+    },
+    "/api/bookings/{id}/accept": {
+      "post": {
+        "summary": "Worker accepts booking offer",
+        "responses": { "200": { "description": "Booking accepted" } }
+      }
+    },
+    "/api/bookings/{id}/status": {
+      "post": {
+        "summary": "Update booking status (on_the_way, in_progress, completed, cancelled)",
+        "responses": { "200": { "description": "Status updated" } }
+      }
+    },
+    "/api/matching/find-workers": {
+      "post": {
+        "summary": "Execute six-factor AI matching engine and return ranked candidates",
+        "responses": { "200": { "description": "Ranked candidates with 6-factor score breakdown" } }
+      }
+    },
+    "/api/admin/rules/matching-weights": {
+      "get": { "summary": "Get federation matching weights", "responses": { "200": { "description": "Matching weights" } } },
+      "put": { "summary": "Update federation matching weights", "responses": { "200": { "description": "Weights updated" } } }
+    },
+    "/api/admin/rules/pricing": {
+      "get": { "summary": "Get dynamic pricing parameters", "responses": { "200": { "description": "Pricing parameters" } } },
+      "put": { "summary": "Update dynamic pricing parameters", "responses": { "200": { "description": "Pricing parameters updated" } } }
+    },
+    "/api/admin/rules/premiums": {
+      "get": { "summary": "Get night and holiday premium rules", "responses": { "200": { "description": "Premium rules" } } },
+      "put": { "summary": "Update premium rules", "responses": { "200": { "description": "Premium rules updated" } } }
+    },
+    "/api/chat/{bookingId}/messages": {
+      "get": { "summary": "Get translated chat messages for booking", "responses": { "200": { "description": "Chat messages" } } },
+      "post": { "summary": "Send message with auto-translation via Bhashini", "responses": { "201": { "description": "Message sent" } } }
+    },
+    "/api/support/tickets": {
+      "get": { "summary": "List support tickets", "responses": { "200": { "description": "Tickets list" } } },
+      "post": { "summary": "Create multilingual support ticket", "responses": { "201": { "description": "Ticket created" } } }
+    },
+    "/api/support/tickets/{id}/reply": {
+      "post": { "summary": "Reply to support ticket", "responses": { "200": { "description": "Reply added" } } }
+    },
+    "/api/support/tickets/{id}/escalate": {
+      "post": { "summary": "Escalate ticket to federation admin", "responses": { "200": { "description": "Ticket escalated" } } }
+    },
+    "/api/payments/create-order": {
+      "post": { "summary": "Initiate UPI payment order or *99# USSD virtual UPI ID", "responses": { "200": { "description": "Order created" } } }
+    },
+    "/api/payments/webhook": {
+      "post": { "summary": "Idempotent payment webhook capturing payment into zero-commission ledger", "responses": { "200": { "description": "Payment captured" } } }
+    },
+    "/api/payments/payout": {
+      "post": { "summary": "Disburse 100% of worker funds to verified UPI ID with 0% platform deduction", "responses": { "200": { "description": "Payout processed" } } }
+    },
+    "/api/payments/receipt/{bookingId}": {
+      "get": { "summary": "Get itemized transparent receipt showing 0% commission", "responses": { "200": { "description": "Receipt" } } }
+    },
+    "/api/payments/ledger/{bookingId}": {
+      "get": { "summary": "Get immutable double-entry ledger entries for booking", "responses": { "200": { "description": "Ledger entries" } } }
+    },
+    "/api/payments/funding-model": {
+      "get": { "summary": "How TaskLink operates at 0% commission through flat cooperative subscriptions", "responses": { "200": { "description": "Funding model" } } }
+    },
+    "/api/reviews": {
+      "post": { "summary": "Submit rating and review for completed booking", "responses": { "201": { "description": "Review created" } } }
+    },
+    "/api/reviews/worker/{workerId}": {
+      "get": { "summary": "Get public reviews and Bayesian rating for worker", "responses": { "200": { "description": "Worker reviews" } } }
+    },
+    "/api/reviews/{id}/reply": {
+      "post": { "summary": "Worker replies once to customer review", "responses": { "200": { "description": "Reply added" } } }
+    },
+    "/api/groups": {
+      "get": { "summary": "List worker crews with discovery cards", "responses": { "200": { "description": "Crew list" } } },
+      "post": { "summary": "Create worker group / crew with percentage payout shares", "responses": { "201": { "description": "Crew created" } } }
+    },
+    "/api/groups/{id}": {
+      "get": { "summary": "Get crew profile and member breakdown", "responses": { "200": { "description": "Crew profile" } } }
+    },
+    "/api/groups/{id}/book": {
+      "post": { "summary": "Book a crew by headcount and days, with itemized member payout splits", "responses": { "201": { "description": "Crew booked" } } }
+    },
+    "/api/groups/{id}/attendance": {
+      "post": { "summary": "Confirm or update crew member attendance", "responses": { "200": { "description": "Attendance updated" } } }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
